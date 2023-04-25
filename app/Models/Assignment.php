@@ -14,6 +14,10 @@ class Assignment extends Model
         'status'
     ];
 
+    protected $casts = [
+        'students' => 'array',
+    ];
+
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);

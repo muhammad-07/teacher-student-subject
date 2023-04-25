@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -23,6 +24,8 @@ Route::get('/', function () {
 Route::resource('subjects', SubjectController::class);
 Route::resource('students', StudentController::class);
 Route::resource('teachers', TeacherController::class);
+
+Route::resource('assignments', AssignmentController::class);
 
 // Auth::routes();
 

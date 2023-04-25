@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -19,7 +20,8 @@ class AssignmentController extends Controller
     {
         $teachers = Teacher::all();
         $subjects = Subject::all();
-        return view('assignments.create', compact('teachers', 'subjects'));
+        $students = Student::all();
+        return view('assignments.create', compact('teachers', 'subjects', 'students'));
     }
 
     public function store(Request $request)
@@ -30,9 +32,9 @@ class AssignmentController extends Controller
             'students' => 'required|array',
             'status' => 'required|in:Active,Inactive',
         ]);
-
+        // $validatedData['students'] = implode(',', $validatedData['students']);
         $assignment = Assignment::create($validatedData);
-
+        // dd($assignment);
         return redirect()->route('assignments.index')->with('success', 'Assignment created successfully.');
     }
 
@@ -40,7 +42,8 @@ class AssignmentController extends Controller
     {
         $teachers = Teacher::all();
         $subjects = Subject::all();
-        return view('assignments.edit', compact('assignment', 'teachers', 'subjects'));
+        $students = Student::all();
+        return view('assignments.edit', compact('assignment', 'teachers', 'subjects', 'students'));
     }
 
     public function update(Request $request, Assignment $assignment)
