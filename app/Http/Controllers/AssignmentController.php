@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AssignmentController extends Controller
 {
@@ -33,7 +34,25 @@ class AssignmentController extends Controller
             'status' => 'required|in:Active,Inactive',
         ]);
         // $validatedData['students'] = implode(',', $validatedData['students']);
-        $assignment = Assignment::create($validatedData);
+        $validatedData['subject_id'] = (int) $validatedData['subject_id'];
+        $teacherId = (int) $validatedData['teacher_id'];
+        $subjectId = (int) $validatedData['subject_id'];
+        $validator = Validator::make(
+            $validatedData,
+            [
+                'subject_id' => function ($attribute, $value, $fail) use ($teacherId, $subjectId) {
+                    $assignment = Assignment::where('teacher_id', $teacherId)->where('subject_id', $subjectId)->first();
+                    if ($assignment) {
+                        $fail("The selected subject is already assigned to the selected teacher.");
+                    }
+                },
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        Assignment::create($validatedData);
         // dd($assignment);
         return redirect()->route('assignments.index')->with('success', 'Assignment created successfully.');
     }

@@ -22,8 +22,8 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'unique:subjects'],
-            'status' => ['required', Rule::in(['Active', 'Inactive'])],
+            'name' => 'required|unique:subjects',
+            'status' => 'required|in:Active,Inactive',
         ]);
 
         Subject::create($request->all());

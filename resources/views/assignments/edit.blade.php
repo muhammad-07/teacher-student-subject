@@ -3,6 +3,9 @@
 @section('content')
     <div class="container">
         <h1>Edit Assignment</h1>
+        @if ($errors->any())
+            {!! implode('', $errors->all('<div class="text-danger">:message</div>')) !!}
+        @endif
         <form action="{{ route('assignments.update', $assignment->id) }}" method="post">
             @csrf
             @method('PUT')

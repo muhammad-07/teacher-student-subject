@@ -3,6 +3,9 @@
 @section('content')
     <div class="container">
         <h1>Assign Student</h1>
+        @if ($errors->any())
+            {!! implode('', $errors->all('<div class="text-danger">:message</div>')) !!}
+        @endif
         <form action="{{ route('assignments.store') }}" method="post">
             @csrf
             <div class="form-group">
@@ -30,9 +33,7 @@
                         <option value="{{ $student->id }}">{{ $student->name }}</option>
                     @endforeach
                 </select>
-                @error('students')
-                <span class="invalid-feedback">{{ $message }}</span>
-            @enderror
+
             </div>
             <div class="form-group">
                 <label for="status">Status*</label>
