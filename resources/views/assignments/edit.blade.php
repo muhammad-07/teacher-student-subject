@@ -29,27 +29,24 @@
             <div class="form-group">
                 <label for="students">Assign Students*</label>
                 <select name="students[]" id="students" class="form-control" multiple required>
-                    {{-- <td>
-                        @foreach($assignment->students as $studentId)
-                        <option value="{{ $studentId }}"
-                            {{ in_array($studentId, $assignment->students->pluck('id')->toArray()) ? 'selected' : '' }}>
-                            {{ $student->name }}</option>
-                            {{ App\Models\Student::find($studentId)->name }}<br>
-                        @endforeach
-                    </td> --}}
                     @foreach ($students as $student)
                         <option value="{{ $student->id }}"
-                            {{-- {{ in_array($student->id, $assignment->students->pluck('id')->toArray()) ? 'selected' : '' }}> --}}
-                            {{ $student->name }} </option>
+                        {{ in_array($student->id, $assignment->students) ? 'selected' : '' }}> {{ $student->name }} </option>
                     @endforeach
                 </select>
+                @error('students')
+                <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="status">Status*</label>
                 <select name="status" id="status" class="form-control" required>
-                    <option value="active" {{ $assignment->status == 'active' ? 'selected' : '' }}>Active</option>
-                    <option value="inactive" {{ $assignment->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                    <option value="Active" {{ $assignment->status == 'Active' ? 'selected' : '' }}>Active</option>
+                    <option value="Inactive" {{ $assignment->status == 'Inactive' ? 'selected' : '' }}>Inactive</option>
                 </select>
+                @error('status')
+                <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
             <a href="{{ route('assignments.index') }}" class="btn btn-secondary">Cancel</a>
